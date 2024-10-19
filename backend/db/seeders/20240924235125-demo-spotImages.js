@@ -107,7 +107,7 @@ module.exports = {
         {
           spotId: 6,
           url: "https://i.pinimg.com/736x/38/36/2b/38362b33850aa9e31668788b8fe58df7.jpg",
-          preview: false,
+          preview: true,
         },
         {
           spotId: 7,
