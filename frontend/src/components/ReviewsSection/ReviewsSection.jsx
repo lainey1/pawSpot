@@ -9,15 +9,19 @@ const ReviewsSection = ({
   currentPage,
   totalPages,
   setCurrentPage,
+  hasReviewed,
+  isLoggedIn,
+  isOwner,
 }) => (
   <div className="reviews-section">
+    {isLoggedIn && !hasReviewed && !isOwner && (
+      <button className="post-review-button">Post Your Review</button>
+    )}
     <ul className="reviews-list">
       {currentReviews.map((review) => (
         <li key={review.id} className="review-item">
           <p>
-            <strong>
-              {review.User.firstName} {review.User.lastName}
-            </strong>
+            <strong>{review.User.firstName}</strong>
           </p>
           <p className="review-date">{formatDate(review.updatedAt)}</p>
           <p>{review.review}</p>
