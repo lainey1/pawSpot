@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreateNewSpotForm.css";
+import { useDispatch } from "react-redux";
+import { createNewSpot } from "../../store/spots";
 
 const CreateSpot = () => {
   const [formData, setFormData] = useState({
     country: "",
-    streetAddress: "",
+    address: "",
     city: "",
     state: "",
     lat: "",
@@ -19,6 +21,7 @@ const CreateSpot = () => {
     imageUrls: ["", "", "", ""],
   });
   const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -51,34 +54,30 @@ const CreateSpot = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    try {
-      const response = await fetch("/api/spots", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          lat: formData.lat || null,
-          lng: formData.lng || null,
-        }),
-      });
 
-      if (response.ok) {
-        const newSpot = await response.json();
-        navigate(`/spots/${newSpot.id}`);
-      } else {
-        // Handle error response
-        const errorData = await response.json();
-        setErrors(errorData.errors || {});
-      }
+    // ? IS THIS THE BUG ?
+    const newSpotData = {
+      ...formData,
+      lat: parseFloat(formData.lat),
+      lng: parseFloat(formData.lng),
+      imageUrls: [formData.previewImageUrl, ...formData.imageUrls].filter(
+        (url) => url
+      ), // Combine
+    };
+
+    try {
+      const newSpot = await dispatch(createNewSpot(newSpotData));
+      console.log("New spot created:", newSpot); // Log to check what data you have
+      navigate(`/spots/${newSpot.id}`); // Navigate to the new spot's detail page
     } catch (error) {
-      console.error("Error creating spot:", error);
+      console.log("goodbye");
+      setErrors({ submit: error.message || "An unknown error occurred." });
     }
   };
 
@@ -91,21 +90,61 @@ const CreateSpot = () => {
       <p>
         Guests will only get your exact address once they booked a reservation.
       </p>
-      {["country", "streetAddress", "city", "state"].map((field) => (
-        <div key={field} className="location-container">
-          <label className="input-label">
-            {field.charAt(0).toUpperCase() + field.slice(1)}:
-          </label>
-          <input
-            className="input-field"
-            name={field}
-            value={formData[field]}
-            onChange={handleChange}
-            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-          />
-          {errors[field] && <p className="error-message">{errors[field]}</p>}
-        </div>
-      ))}
+
+      {/* Location Section */}
+      <h3>Where&apos;s your place located?</h3>
+      <p>
+        Guests will only get your exact address once they booked a reservation.
+      </p>
+
+      <input
+        className="input-field"
+        name="country"
+        value={formData.country}
+        onChange={handleChange}
+        placeholder="Country"
+        required
+      />
+      <input
+        className="input-field"
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        placeholder="Street Address"
+        required
+      />
+      <input
+        className="input-field"
+        name="city"
+        value={formData.city}
+        onChange={handleChange}
+        placeholder="City"
+        required
+      />
+      <input
+        className="input-field"
+        name="state"
+        value={formData.state}
+        onChange={handleChange}
+        placeholder="State"
+        required
+      />
+      <input
+        type="number"
+        name="lat"
+        value={formData.lat}
+        onChange={handleChange}
+        placeholder="Latitude"
+        required
+      />
+      <input
+        type="number"
+        name="lng"
+        value={formData.lng}
+        onChange={handleChange}
+        placeholder="Longitude"
+        required
+      />
 
       {/* Description Section */}
       <h3>Describe your place to guests</h3>

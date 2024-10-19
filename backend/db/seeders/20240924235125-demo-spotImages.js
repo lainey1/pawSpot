@@ -47,7 +47,7 @@ module.exports = {
 
         {
           spotId: 2,
-          url: "https://www.petluv.com/cdn/shop/articles/create-zen-zone.jpg",
+          url: "https://cdn.shopify.com/s/files/1/0549/5806/3713/files/japandi_cat_tree_indoor.jpg",
           preview: false,
         },
         {
@@ -84,19 +84,30 @@ module.exports = {
         },
         {
           spotId: 5,
+          url: "https://www.pawsandstay.co.uk/upload/2023/3/15/medium_Treehouse_beneath_the_branches_1_44908573d0.jpg",
+          preview: false,
+        },
+
+        {
+          spotId: 5,
+          url: "https://www.hauspanther.com/wp-content/uploads/2019/07/NekoModernCatTree4.jpg",
+          preview: false,
+        },
+        {
+          spotId: 5,
+          url: "https://www.canopyandstars.co.uk/upload/2023/1/31/Dog_friendly_treehouse_holidays_1_ee16be2440.jpg",
+          preview: false,
+        },
+        {
+          spotId: 5,
           url: "https://as2.ftcdn.net/v2/jpg/05/04/26/85/1000_F_504268518_xp08vOJercavAzWr5urFX6uQo2MGz9CI.jpg",
           preview: false,
         },
 
         {
           spotId: 6,
-          url: "https://lifeonshadylane.com/wp-content/uploads/2017/04/5afaf69ab3518909fe575fe8de3d7f3d.jpg",
-          preview: true,
-        },
-        {
-          spotId: 5,
           url: "https://i.pinimg.com/736x/38/36/2b/38362b33850aa9e31668788b8fe58df7.jpg",
-          preview: false,
+          preview: true,
         },
         {
           spotId: 7,
@@ -133,16 +144,6 @@ module.exports = {
       options
     );
   },
-  // async down(queryInterface, Sequelize) {
-  //   options.tableName = "SpotImages";
-  //   // await queryInterface.dropTable(options);
-  //   return queryInterface.bulkDelete(options, null, {});
-  // },
-
-  // //! TESTING BELOW
-  // async down(queryInterface, Sequelize) {
-  //   return queryInterface.bulkDelete("SpotImages", null, options);
-  // },
 
   async down(queryInterface, Sequelize) {
     options.tableName = "SpotImages";

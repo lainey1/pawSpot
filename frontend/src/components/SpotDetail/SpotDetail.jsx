@@ -1,6 +1,7 @@
 //frontend/src/components/SpotDetail/SpotDetail.jsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux"; // to access redux state
 import "./SpotDetail.css";
 import ImagesContainer from "../ImagesContainer/ImagesContainer";
 import ReviewsSection from "../ReviewsSection/ReviewsSection";
@@ -12,6 +13,9 @@ const SpotDetail = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
+
+  //* Add current user from the redux store
+  const currentUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     const fetchSpot = async () => {
@@ -48,6 +52,14 @@ const SpotDetail = () => {
   const currentReviews = reviews
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     .slice(indexOfFirstReview, indexOfLastReview);
+
+  //* Check if current user has already reviewed spot
+  const hasReviewed = reviews.some(
+    (review) => review.userId === currentUser?.id
+  );
+
+  //* Check if owner of current spot
+  const isOwner = spot.ownerId === currentUser.id;
 
   return (
     <div className="outer-container">
@@ -88,6 +100,9 @@ const SpotDetail = () => {
           currentPage={currentPage}
           totalPages={totalPages}
           setCurrentPage={setCurrentPage}
+          hasReviewed={hasReviewed}
+          isLoggedIn={!!currentUser}
+          isOwner={isOwner}
         />
       </div>
     </div>
