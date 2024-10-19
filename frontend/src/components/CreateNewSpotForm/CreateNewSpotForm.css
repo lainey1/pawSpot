@@ -32,6 +32,13 @@
   margin-bottom: 20px;
 }
 
+.section-divider {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0;
+}
+
 .input-label {
   font-weight: bold;
   margin-bottom: 5px;

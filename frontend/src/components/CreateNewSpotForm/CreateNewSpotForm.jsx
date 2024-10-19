@@ -60,13 +60,27 @@ const CreateSpot = () => {
       setErrors(validationErrors);
       return;
     }
+
+    // ? IS THIS THE BUG ?
+    const newSpotData = {
+      ...formData,
+      lat: parseFloat(formData.lat),
+      lng: parseFloat(formData.lng),
+      imageUrls: [formData.previewImageUrl, ...formData.imageUrls].filter(
+        (url) => url
+      ), // Combine and filter
+    };
+
     try {
-      const newSpot = await dispatch(createNewSpot(formData)); // Dispatch the thunk with form data
+      const newSpot = await dispatch(createNewSpot(newSpotData));
+      console.log("New spot created:", newSpot); // Log to check what data you have
       navigate(`/spots/${newSpot.id}`); // Navigate to the new spot's detail page
     } catch (error) {
-      setErrors({ submit: error.message });
+      console.log("goodbye");
+      setErrors({ submit: error.message || "An unknown error occurred." });
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>Create a New Spot</h2>
@@ -76,20 +90,45 @@ const CreateSpot = () => {
       <p>
         Guests will only get your exact address once they booked a reservation.
       </p>
-      {["Country", "Street Address", "City", "State"].map((field) => (
-        <div key={field} className="location-container">
-          <label className="input-label">{field}:</label>
-          <input
-            className="input-field"
-            name={field}
-            value={formData[field]}
-            onChange={handleChange}
-            placeholder={field}
-            required
-          />
-          {errors[field] && <p className="error-message">{errors[field]}</p>}
-        </div>
-      ))}
+
+      {/* Location Section */}
+      <h3>Where&apos;s your place located?</h3>
+      <p>
+        Guests will only get your exact address once they booked a reservation.
+      </p>
+
+      <input
+        className="input-field"
+        name="country"
+        value={formData.country}
+        onChange={handleChange}
+        placeholder="Country"
+        required
+      />
+      <input
+        className="input-field"
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        placeholder="Street Address"
+        required
+      />
+      <input
+        className="input-field"
+        name="city"
+        value={formData.city}
+        onChange={handleChange}
+        placeholder="City"
+        required
+      />
+      <input
+        className="input-field"
+        name="state"
+        value={formData.state}
+        onChange={handleChange}
+        placeholder="State"
+        required
+      />
       <input
         type="number"
         name="lat"

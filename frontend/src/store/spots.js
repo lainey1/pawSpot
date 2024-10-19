@@ -27,6 +27,7 @@ export const getSpots = () => async (dispatch) => {
     if (response.ok) {
       const data = await response.json();
       dispatch(loadSpots(data.Spots)); //! FIX IDENTIFIED. Updated from data to data.spots to access nested data.
+      return data.spot; // Return the created spot data //!! REMEMBER TO RETURN
     } else {
       console.error("Failed to fetch spots:", response.statusText);
     }
@@ -47,15 +48,16 @@ export const createNewSpot = (spotData) => async (dispatch, getState) => {
       "Content-Type": "application/json",
     },
   });
+  console.log("========>Response from server:", response); //?? DEBUGGER
 
   if (response.ok) {
     const data = await response.json();
     const existingSpots = getState().spots.list; // Access the existing spots from the state
     dispatch(loadSpots([...existingSpots, data.spot])); // Update your existing spots here
-    return response;
+    return data;
   } else {
     const errorData = await response.json();
-    console.error("Error creating spot:", errorData);
+    console.error("============>ERROR creating spot:", errorData);
     return Promise.reject(errorData);
   }
 };
