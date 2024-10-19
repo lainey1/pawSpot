@@ -1,5 +1,7 @@
 //frontend/src/store/spots.js
 
+import { csrfFetch } from "./csrf";
+
 // #1 ACTION TYPES
 const LOAD = "spots/LOAD";
 const CREATE = "spots/CREATE";
@@ -34,6 +36,8 @@ export const getSpots = () => async (dispatch) => {
     dispatch({ type: "spots/LOAD_END" }); // Set loading false after fetch
   }
 };
+
+//* Create thunk action to create a spot in server
 
 export const createNewSpot = (spotData) => async (dispatch, getState) => {
   const response = await csrfFetch("/api/spots", {
