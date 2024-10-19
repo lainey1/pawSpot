@@ -298,7 +298,6 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   return res.status(200).json(spot);
 });
 
-//* Create a Spot (v2) (CHECKED)
 //* Create a Spot
 router.post(
   "/",
