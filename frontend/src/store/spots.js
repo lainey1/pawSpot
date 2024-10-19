@@ -2,12 +2,18 @@
 
 // #1 ACTION TYPES
 const LOAD = "spots/LOAD";
+const CREATE = "spots/CREATE";
 
 // #2 ACTION CREATORS
 //* Create Action with LOAD type that returns action type and list of spots:
 export const loadSpots = (spotsData) => ({
   type: LOAD,
   list: spotsData, // Pass the data in the expected structure
+});
+
+export const createSpot = (spot) => ({
+  type: CREATE,
+  spot,
 });
 
 // #3 THUNK ACTION
@@ -29,13 +35,34 @@ export const getSpots = () => async (dispatch) => {
   }
 };
 
-//* Initial State
+export const createNewSpot = (spotData) => async (dispatch, getState) => {
+  const response = await csrfFetch("/api/spots", {
+    method: "POST",
+    body: JSON.stringify(spotData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    const existingSpots = getState().spots.list; // Access the existing spots from the state
+    dispatch(loadSpots([...existingSpots, data.spot])); // Update your existing spots here
+    return response;
+  } else {
+    const errorData = await response.json();
+    console.error("Error creating spot:", errorData);
+    return Promise.reject(errorData);
+  }
+};
+
+//# 4 SET INITIAL STATE
 const initialState = {
   list: [],
   loading: false,
 };
 
-// #4 REDUCER HANDLING
+// #5 REDUCER HANDLING
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     //* When LOAD action type is received, it processes the list of Spots from the action.
@@ -54,6 +81,12 @@ const spotsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+      };
+
+    case CREATE:
+      return {
+        ...state,
+        list: [...state.list, action.spot],
       };
     default:
       return state;
