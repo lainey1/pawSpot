@@ -3,6 +3,7 @@
 import "./ReviewsSection.css";
 
 const ReviewsSection = ({
+  //* set props
   currentReviews,
   formatDate,
   currentPage,

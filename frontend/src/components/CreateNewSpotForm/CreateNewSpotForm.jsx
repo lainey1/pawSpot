@@ -68,7 +68,7 @@ const CreateSpot = () => {
       lng: parseFloat(formData.lng),
       imageUrls: [formData.previewImageUrl, ...formData.imageUrls].filter(
         (url) => url
-      ), // Combine and filter
+      ), // Combine
     };
 
     try {
