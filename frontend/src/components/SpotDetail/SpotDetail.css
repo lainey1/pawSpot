@@ -4,7 +4,7 @@
   max-width: 1000px;
   margin: 0 auto; /* Centers the container */
   padding: 0 20px; /* Top/Bottom - Left/Right Horizontal padding */
-  width: 90%; /* Ensure it takes the full width below 1000px */
+  width: 95%; /* Ensure it takes the full width below 1000px */
   display: flex; /* Use flex to manage inner layout */
   flex-direction: column; /* Stack child elements */
   height: auto; /* Adjust height for smaller/larger screens */
