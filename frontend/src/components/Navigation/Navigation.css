@@ -116,11 +116,13 @@
   right: 0;
   top: 30px;
   background: #ffffff;
+  border: 2px solid #dedede;
+  box-shadow: 0 2px 8px #ccc;
+  border-radius: 10px;
   z-index: 10;
   width: 100%;
   min-width: 200px;
-  margin-top: 35px;
-  padding: 10px 0 10px 16px;
+  margin-top: 20px;
 }
 
 .profile-dropdown.hidden {

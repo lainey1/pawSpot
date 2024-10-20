@@ -58,6 +58,7 @@ const SpotDetail = () => {
     (review) => review.userId === currentUser?.id
   );
 
+  //* Check if owner of current spot
   const isOwner = currentUser && spot.ownerId === currentUser.id;
 
   return (
