@@ -40,3 +40,18 @@
   justify-content: space-between;
   margin: 5px;
 }
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+  .images-small-container {
+    display: none; /* Hides images with this class */
+  }
+
+  .image-large-container {
+    height: 400px;
+    margin-right: 5px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+}

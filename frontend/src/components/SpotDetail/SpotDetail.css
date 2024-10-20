@@ -4,7 +4,7 @@
   max-width: 1000px;
   margin: 0 auto; /* Centers the container */
   padding: 0 20px; /* Top/Bottom - Left/Right Horizontal padding */
-  width: 100%; /* Ensure it takes the full width below 1000px */
+  width: 90%; /* Ensure it takes the full width below 1000px */
   display: flex; /* Use flex to manage inner layout */
   flex-direction: column; /* Stack child elements */
   height: auto; /* Adjust height for smaller/larger screens */
@@ -24,7 +24,7 @@
   margin-right: 50px;
   margin-top: 1em;
   padding: 15px;
-  width: 500px;
+  width: 100%;
 }
 
 .details-container {
@@ -118,7 +118,7 @@
 
   .bookit-sidebar {
     margin-right: 30px;
-    width: 40%;
+    width: 100%;
   }
 
   .details-container {
@@ -132,10 +132,10 @@
   }
 }
 
-/* Media Query for Small screens */
+/* Media Query for Small Screens */
 @media (max-width: 768px) {
   .outer-container {
-    padding: 0 10px; /* Adjust padding for smaller screens */
+    padding: 0 10px;
   }
 
   .bookit-sidebar {
