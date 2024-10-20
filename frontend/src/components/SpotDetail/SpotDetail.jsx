@@ -16,7 +16,6 @@ const SpotDetail = () => {
 
   //* Add current user from the redux store
   const currentUser = useSelector((state) => state.session.user);
-  const isOwner = currentUser && spot.Owner.id === currentUser.id;
 
   useEffect(() => {
     const fetchSpot = async () => {
@@ -58,6 +57,8 @@ const SpotDetail = () => {
   const hasReviewed = reviews.some(
     (review) => review.userId === currentUser?.id
   );
+
+  const isOwner = currentUser && spot.ownerId === currentUser.id;
 
   return (
     <div className="outer-container">
