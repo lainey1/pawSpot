@@ -1,0 +1,22 @@
+/* frontend/src/components/CreateReviewForm/CreateReviewForm.css */
+
+.stars-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 2rem;
+  color: lightgray; /* Color for unfilled stars */
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: gold; /* Color for filled stars */
+}
+
+.star:hover,
+.star:hover ~ .star {
+  color: gold; /* Change color on hover */
+}

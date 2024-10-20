@@ -13,6 +13,7 @@ import Navigation from "./components/Navigation/Navigation";
 import SpotsBrowser from "./components/SpotsBrowser";
 import SpotDetail from "./components/SpotDetail/SpotDetail";
 import CreateSpot from "./components/CreateNewSpotForm/CreateNewSpotForm";
+import CreateReview from "./components/CreateReviewForm/CreateReviewForm";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/create-spot",
         element: <CreateSpot />,
+      },
+      {
+        path: "/create-review",
+        element: <CreateReview />,
       },
     ],
   },

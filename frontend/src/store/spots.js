@@ -7,7 +7,6 @@ const LOAD = "spots/LOAD";
 const CREATE = "spots/CREATE";
 
 // #2 ACTION CREATORS
-//* Create Action with LOAD type that returns action type and list of spots:
 export const loadSpots = (spotsData) => ({
   type: LOAD,
   list: spotsData, // Pass the data in the expected structure
@@ -62,7 +61,7 @@ export const createNewSpot = (spotData) => async (dispatch, getState) => {
   }
 };
 
-//# 4 SET INITIAL STATE
+// #4 SET INITIAL STATE
 const initialState = {
   list: [],
   loading: false,

@@ -183,7 +183,6 @@ router.get("/current", requireAuth, async (req, res) => {
           // "previewImage",
         ],
         include: [
-          //! FIXED bug
           {
             model: SpotImage,
             as: "SpotImages",
@@ -198,12 +197,6 @@ router.get("/current", requireAuth, async (req, res) => {
         as: "ReviewImages",
         attributes: ["id", "url"],
       },
-      // ! Removed original
-      //{
-      //   model: SpotImage,
-      //   as: "SpotImages",
-      //   attributes: ["id", "url"],
-      // },
     ],
   });
 
