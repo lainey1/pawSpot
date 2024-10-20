@@ -61,6 +61,8 @@ const SpotDetail = () => {
   //* Check if owner of current spot
   const isOwner = spot.ownerId === currentUser.id;
 
+  const isOwner = currentUser && spot.ownerId === currentUser.id;
+
   return (
     <div className="outer-container">
       <div className="spot-detail-container">
