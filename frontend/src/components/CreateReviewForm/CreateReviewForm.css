@@ -12,18 +12,10 @@
 .review-modal {
   display: flex;
   flex-direction: column;
-  min-width: 300px;
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
+  width: 100%;
   background-color: white;
   border-radius: 5px;
   box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-}
-
-.review-modal h2 {
-  text-align: center; /* Center the title */
-  margin-bottom: 20px; /* Space below the heading */
 }
 
 .review-modal textarea {
@@ -31,8 +23,9 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: vertical; /* Allow vertical resizing */
-  min-height: 100px; /* Set a minimum height */
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
 }
 
 .review-modal .stars-rating {
@@ -69,6 +62,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding-bottom: 1em;
 }
 
 .star {
@@ -79,6 +73,11 @@
 
 .star.filled {
   color: gold; /* Color for filled stars */
+}
+
+.stars-label {
+  padding-left: 5px;
+  font-size: 1.25em;
 }
 
 .star:hover,
