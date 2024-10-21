@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+// frontend/src/components/ReviewsSection/ReviewsSection.jsx
+
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createNewReview } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
@@ -11,8 +13,6 @@ function ReviewFormModal() {
   });
 
   const [errors, setErrors] = useState({});
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [serverError, setServerError] = useState("");
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
@@ -22,7 +22,6 @@ function ReviewFormModal() {
       ...prev,
       [name]: value,
     }));
-    setServerError("");
   };
 
   const validateForm = () => {
@@ -32,22 +31,13 @@ function ReviewFormModal() {
     }
     if (
       !formData.stars ||
-      !Number.isInteger(Number(formData.stars)) ||
+      !Number.isInteger(Number(formData.stars)) || // Convert to number for validation
       formData.stars < 1 ||
       formData.stars > 5
     ) {
-      newErrors.stars = "Stars must be an integer from 1 to 5";
+      newErrors.stars = "Stars must be an integer from 1 to 5"; // Assign the error message
     }
     return newErrors; // Return the errors object
-  };
-
-  const checkButtonState = () => {
-    if (formData.review.length >= 10 && formData.stars) {
-      setIsButtonEnabled(true);
-      setErrors({});
-    } else {
-      setIsButtonEnabled(false);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -59,32 +49,23 @@ function ReviewFormModal() {
       setErrors(validationErrors);
       return;
     } else {
-      const newReviewData = { ...formData };
-      setErrors({});
-      setServerError("");
-
+      const newReviewData = { ...formData }; // Create newReviewData here
+      setErrors({}); // Reset existing errors for a new submission
       return dispatch(createNewReview(newReviewData))
-        .then(closeModal)
+        .then(closeModal) // If successful, close modal
         .catch(async (res) => {
-          const data = await res.json();
+          // If failed, error handling
+          const data = await res.json(); // Parse JSON response
           if (data?.errors) {
-            setErrors(data.errors);
-          } else {
-            setServerError("An unexpected error occurred. Please try again.");
+            setErrors(data.errors); // Set errors from response
           }
         });
     }
   };
 
-  useEffect(() => {
-    checkButtonState();
-  });
-
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>How was your stay?</h2>
-      {serverError && <p className="error-message">{serverError}</p>}{" "}
-      {/* Display server error if it exists */}
       <h3>Leave your review here...</h3>
       <textarea
         className="textarea-field"
@@ -94,6 +75,7 @@ function ReviewFormModal() {
         placeholder="Leave your review here..."
       />
       {errors.review && <p className="error-message">{errors.review}</p>}
+
       <div className="stars-rating">
         <h3>Rate your experience:</h3>
         <div className="stars-container">
@@ -106,13 +88,12 @@ function ReviewFormModal() {
               ★
             </span>
           ))}
-          <label className="stars-label">Stars</label>
-          {errors.stars && <p className="error-message">{errors.stars}</p>}
         </div>
+        <label>{formData.stars} Stars</label>
+        {errors.stars && <p className="error-message">{errors.stars}</p>}
       </div>
-      <button type="submit" disabled={!isButtonEnabled}>
-        Submit Your Review
-      </button>
+
+      <button type="submit">Submit Your Review</button>
     </form>
   );
 }
