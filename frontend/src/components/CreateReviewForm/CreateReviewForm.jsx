@@ -1,11 +1,12 @@
-//frontend/src/components/CreateReviewForm/CreateReviewForm.jsx
+// frontend/src/components/ReviewsSection/ReviewsSection.jsx
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { createNewReview } from "../../store/reviews";
+import { useModal } from "../../context/Modal";
+import "./CreateReviewForm.css";
 
-const CreateReview = () => {
+function ReviewFormModal() {
   const [formData, setFormData] = useState({
     review: "",
     stars: "",
@@ -13,7 +14,7 @@ const CreateReview = () => {
 
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { closeModal } = useModal();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,48 +26,51 @@ const CreateReview = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.review.length < 10) {
+    if (formData.review.length < 10) {
       newErrors.review = "Review text needs 10 or more characters";
     }
     if (
       !formData.stars ||
-      !Number.isInteger(formData.stars) ||
+      !Number.isInteger(Number(formData.stars)) || // Convert to number for validation
       formData.stars < 1 ||
       formData.stars > 5
     ) {
-      ("Stars must be an integer from 1 to 5");
+      newErrors.stars = "Stars must be an integer from 1 to 5"; // Assign the error message
     }
+    return newErrors; // Return the errors object
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
-    }
-
-    const newReviewData = {
-      ...formData,
-    };
-
-    try {
-      const newReview = await dispatch(createNewReview(newReviewData));
-      console.log("============>NEW REVIEW CREATED:", newReview);
-      navigate(`/spots/${spot.id}`);
-    } catch (error) {
-      setErrors({ submit: error.message || "An unknown error occurred." });
+    } else {
+      const newReviewData = { ...formData }; // Create newReviewData here
+      setErrors({}); // Reset existing errors for a new submission
+      return dispatch(createNewReview(newReviewData))
+        .then(closeModal) // If successful, close modal
+        .catch(async (res) => {
+          // If failed, error handling
+          const data = await res.json(); // Parse JSON response
+          if (data?.errors) {
+            setErrors(data.errors); // Set errors from response
+          }
+        });
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>How was your stay?</h2>
       <h3>Leave your review here...</h3>
       <textarea
         className="textarea-field"
-        name="description"
-        value={formData.description}
+        name="review"
+        value={formData.review}
         onChange={handleChange}
         placeholder="Leave your review here..."
       />
@@ -87,12 +91,11 @@ const CreateReview = () => {
         </div>
         <label>{formData.stars} Stars</label>
         {errors.stars && <p className="error-message">{errors.stars}</p>}
-        <p></p>
       </div>
 
       <button type="submit">Submit Your Review</button>
     </form>
   );
-};
+}
 
-export default CreateReview;
+export default ReviewFormModal;
